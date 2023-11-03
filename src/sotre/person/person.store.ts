@@ -1,7 +1,8 @@
 import { type StateCreator, create } from "zustand";//el type es para que no importe nada
 
-import { StateStorage, createJSONStorage, devtools, persist } from "zustand/middleware";
+import { StateStorage, createJSONStorage, persist } from "zustand/middleware";
 import { customSessionStorage } from "..";
+import { customFirebaseStorage } from "../storages/firebase-storage.storage";
 
 
 interface PersonState{
@@ -27,13 +28,13 @@ const storeAPi: StateCreator<PersonState & Actions> = ( set ) => ( {
   } );
 
 
-export const usePersonStore = create<PersonState & Actions>()(
-    devtools(
-      persist(
-        storeAPi
-        , {
-          name: 'person-storage',
-         storage: customSessionStorage,
-        } )
+export const usePersonStore = create<PersonState  & Actions>()(
+  persist   (
+        storeAPi,
+        {
+          name:'personStorage'
+          ,storage:customFirebaseStorage,
+        }
+
     )
   );//nombre del local staore que le quiero asignar 
