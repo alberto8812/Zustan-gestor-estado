@@ -1,23 +1,44 @@
 import { StateStorage, createJSONStorage } from "zustand/middleware";
 
+
+
+const urlFireBase="https://zustan-storages-default-rtdb.firebaseio.com/"
+
+
 export  const storageApi:StateStorage={
-    getItem: function (name: string): string | Promise<string | null> | null {
+    getItem:async function (name: string): Promise<string | null>  {
         /**
          * revisamos el session storage
          */
-        const data=sessionStorage.getItem(name);
+       try {
+        
+        const data= await fetch(`${urlFireBase}/${name}.json`).then(res=>res.json())
+        return JSON.stringify(data);//CONBERTIMOS A UN OBJETO
+       } catch (error) {
+          throw error;
+       }
 
         /**
          * return un valoe
          */
-        return data;
-
-
     },
-    setItem: function (name: string, value: string): void | Promise<void> {
+    setItem: async function (name: string, value: string): Promise<void> {
         /**
          * para estableser un elemento
          */
+
+        try {
+        
+            const data= await fetch(`${urlFireBase}/${name}.json`,{
+                method:'PUT',
+                body:value  
+            }).then(res=>res.json())
+            sessionStorage.setItem(name,data)
+           } catch (error) {
+              throw error;
+           }
+
+
      sessionStorage.setItem(name,value)
     },
         

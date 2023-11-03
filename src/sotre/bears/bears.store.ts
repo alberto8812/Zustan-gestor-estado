@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface Bear{
     id:number,
@@ -18,22 +19,22 @@ interface BearState{
     doNathing:()=>void,
     addBear:()=>void,
     clearBear:()=>void,
-    computed:{
-        totalbears:number
-    },
+ 
+    totalbears:()=>number
+
 
 }
 
-export const useBearStore = create<BearState>()((set,get) => ({
+export const useBearStore = create<BearState>()(
+persist(
+    (set,get) => ({
     blackBears: 0,
     polarBears:5,
     pandaBears:10,
     osoData:[{id:1,name:'ospanda'}],
-    computed:{
-       get totalbears(){
-         return get().blackBears + get().pandaBears + get().polarBears
-       }
-    },
+
+    totalbears:()=>{  return get().blackBears + get().pandaBears + get().polarBears;}
+    ,
 
     increaseblackBears: (by:number) => set((state) => ({ blackBears: state.blackBears + by })),
     increasepolarBears: (by:number) => set((state) => ({ polarBears: state.polarBears + by })),
@@ -42,4 +43,8 @@ export const useBearStore = create<BearState>()((set,get) => ({
     addBear:  () => set((state) => ({osoData:[...state.osoData,{id:state.osoData.length+1,name:`Oso #${state.osoData.length+1}`}]})),//adicionar elemento
     clearBear:  () => set({osoData:[]}),// como estamos limipiando no es necesario el state
 
-}))
+}),
+{name:'bears store'}
+)
+
+)
