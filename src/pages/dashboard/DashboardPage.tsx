@@ -4,7 +4,7 @@ import { useBearStore, usePersonStore } from '../../sotre';
 
 export const Dashboard = () => {
 
-  const computed=useBearStore(state=>state.computed);
+  const totalbears=useBearStore(state=>state.totalbears);
   const firtName=usePersonStore(state=>state.firstName)
   return (
     <>
@@ -17,7 +17,7 @@ export const Dashboard = () => {
         <WhiteCard centered>
           <IoPawOutline size={ 50 } className="text-indigo-600" />
           <h2>Osos</h2>
-          <p>{computed.totalbears}</p>
+          <p>{totalbears()}</p>
         </WhiteCard>
 
 
