@@ -3,6 +3,7 @@ import { type StateCreator, create } from "zustand";//el type es para que no imp
 import { StateStorage, createJSONStorage, devtools, persist } from "zustand/middleware";
 import { customSessionStorage } from "..";
 import { customFirebaseStorage } from "../storages/firebase-storage.storage";
+import { logger } from "../middleware/logger.middleware";
 
 
 interface PersonState{
@@ -29,12 +30,13 @@ const storeAPi: StateCreator<PersonState & Actions,[["zustand/devtools", never]]
 
 
 export const usePersonStore = create<PersonState  & Actions>()(
+ 
   devtools(
   persist   (
         storeAPi,
         {
           name:'personStorage'
-          ,storage:customFirebaseStorage,
+         // ,storage:customFirebaseStorage,
         }
 
     )

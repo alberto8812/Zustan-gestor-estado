@@ -1,3 +1,4 @@
+export { SingleTask } from '../components/jira/SingleTask';
 
 
 export * from './dashboard/DashboardPage';
@@ -8,3 +9,4 @@ export * from './03-slices/WeddingInvitationPage';
 
 
 export * from './auth/LoginPage';
+
