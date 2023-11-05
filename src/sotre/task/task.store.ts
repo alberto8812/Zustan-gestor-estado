@@ -11,6 +11,8 @@ interface TaskStake{
     getByStatus:(status:TaskStatus)=>Task[],
     setDraggintTaskId:(taskId:string)=>void,//cremos un metodo que consigue el id de la tarea 
     removeDragginTaskId:()=>void,
+    changeProgress:(taskId:string,status:TaskStatus)=>void,
+    ontaskDrop:(status:TaskStatus)=>void
 }
 
 interface Actions{
@@ -34,7 +36,20 @@ const storeApi:StateCreator<TaskStake>=(set,get)=>({
     setDraggintTaskId:(taskId:string)=>(
         set({dragginTaskId:taskId})
     ),
-    removeDragginTaskId:()=>(set({dragginTaskId:undefined}))
+    removeDragginTaskId:()=>(set({dragginTaskId:undefined})),
+    changeProgress:(taskId:string,status:TaskStatus)=>{
+       const task= get().tasks[taskId];
+       task.status=status;
+        set(status=>({tasks:{...status.tasks,[taskId]:task}}))
+    },
+    ontaskDrop:(status:TaskStatus)=>{
+        const taskId=get().dragginTaskId;
+
+        if(!taskId) return;
+        get().changeProgress(taskId,status);
+        get().removeDragginTaskId();
+    }
+
 
 })
 
