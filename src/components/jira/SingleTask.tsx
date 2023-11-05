@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { Task } from "../../interfaces"
 import { IoReorderTwoOutline } from "react-icons/io5"
+import { useTaksStore } from "../../sotre"
 
 
 interface Props{
@@ -8,9 +9,17 @@ interface Props{
 }
 
 export const SingleTask:FC <Props> = ({task}) => {
+
+    const setDragginTaskId=useTaksStore(state=>state.setDraggintTaskId)
+    const removeDragginTaskId=useTaksStore(state=>state.removeDragginTaskId)
+    
   return (
     
-    <div className="mt-5 flex items-center justify-between p-2">
+    <div
+    draggable
+    onDragStart={()=>setDragginTaskId(task.id)}//cuando se inicia el arrastre
+    onDragEnd={()=>removeDragginTaskId()}//cuando s termina de arrastrar el elemento
+    className="mt-5 flex items-center justify-between p-2">
     <div className="flex items-center justify-center gap-2">
       <p className="text-base font-bold text-navy-700">
         {task.title}
